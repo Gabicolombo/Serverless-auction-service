@@ -5,11 +5,20 @@ app: serverless-bootcamp
 # "service" is the name of this project. This will also be added to your AWS resource names.
 service: serverless-auction-service
 
+plugins:
+- serverless-pseudo-parameters
+
 provider:
   name: aws
   runtime: nodejs20.x
   memorySize: 256
   stage: ${opt:stage, 'dev'}
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+    - dynamodb:putItem
+    Resource:
+    - arn:aws:dynamodb:#{AWS::Region}:891377171965:table/AuctionsTable
 
 functions:
   createAuction:
