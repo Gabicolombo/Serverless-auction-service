@@ -13,12 +13,14 @@ provider:
   runtime: nodejs20.x
   memorySize: 256
   stage: ${opt:stage, 'dev'}
+  environment:
+    AUCTIONS_TABLE_NAME: ${self:custom.AuctionsTable.name}
   iamRoleStatements:
   - Effect: Allow
     Action:
     - dynamodb:putItem
     Resource:
-    - arn:aws:dynamodb:#{AWS::Region}:891377171965:table/AuctionsTable
+    - ${self:custom.AuctionsTable.arn}
 
 functions:
   createAuction:
@@ -33,7 +35,7 @@ resources:
     AuctionsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: AuctionsTable
+        TableName: AuctionsTable-${self:provider.stage}
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
         - AttributeName: id
@@ -41,3 +43,8 @@ resources:
         KeySchema:
         - AttributeName: id
           KeyType: HASH
+
+custom:
+  AuctionsTable:
+    name: {"Ref": "AuctionsTable"}
+    arn: {"Fn::GetAtt": ["AuctionsTable", "Arn"]}
