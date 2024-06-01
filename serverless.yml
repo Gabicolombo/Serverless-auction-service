@@ -1,0 +1,20 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: '12343'
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: serverless-bootcamp
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: serverless-auction-service
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+
+functions:
+  createAuction:
+    handler: src/handlers/createAuction.handler
+    events:
+    - httpApi:
+        path: /auction
+        method: post
