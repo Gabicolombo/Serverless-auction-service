@@ -10,7 +10,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs18.x
   memorySize: 256
   stage: ${opt:stage, 'dev'}
   environment:
