@@ -20,6 +20,7 @@ provider:
     Action:
     - dynamodb:putItem
     - dynamodb:Scan
+    - dynamodb:GetItem
     Resource:
     - ${self:custom.AuctionsTable.arn}
 
@@ -36,6 +37,13 @@ functions:
     events:
     - httpApi:
         path: /auctions
+        method: get
+
+  getAuction:
+    handler: src/handlers/getAuction.handler
+    events:
+    - httpApi:
+        path: /auctions/{id}
         method: get
 
 resources:
