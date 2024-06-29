@@ -21,17 +21,18 @@ async function placeBid(event, context) {
       },
       ReturnValues: 'ALL_NEW',
     };
-  
+    console.log(params);
     let updatedAuction;
-  
+
     try {
-      const result = await dynamodb.update(params).promise();
+      const result = await dynamodb.updateItem(params).promise();
+      console.log(result);
       updatedAuction = result.Attributes;
     } catch (error) {
       console.error(error);
       throw new createError.InternalServerError(error);
     }
-  
+
     return {
       statusCode: 200,
       body: JSON.stringify(updatedAuction),
